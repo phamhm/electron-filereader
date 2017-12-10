@@ -55,4 +55,17 @@ function showCommentBox(state = false,  action){
 
 }
 
-export default {fileLines, selectLine, comments, db, showCommentBox};
+function searchTextResult(state = null, action){
+  const payload = action.payload;
+
+  switch(action.type){
+  case TYPES.SEARCH_TEXT:
+    return payload ? [...payload] : null;
+  default:
+    return state;
+  }
+}
+
+export default {
+  fileLines, selectLine, comments, db, showCommentBox, searchTextResult
+};

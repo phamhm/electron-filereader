@@ -7,5 +7,6 @@ export default {
   UPDATE_COMMENT:  'fileread/UPDATE_COMMENT',
   SET_DB:           'fileread/SET_DB',
   SHOW_COMMENT_BOX: 'fileread/SHOW_COMMENT_BOX',
-  SET_TEXT_LIST:    'fileread/SET_TEXT_LIST'
+  SET_TEXT_LIST:    'fileread/SET_TEXT_LIST',
+  SEARCH_TEXT:      'fileread/SEARCH_TEXT'
 };

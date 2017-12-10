@@ -78,3 +78,17 @@ export function showCommentBox(toShow){
     payload: toShow
   };
 }
+
+export function searchText(text, lines){
+  let payload;
+
+  if (!text)
+    payload = null;
+  else
+    payload = lines.filter((line) => line.indexOf(text) != -1);
+
+  return {
+    type: TYPES.SEARCH_TEXT,
+    payload: payload
+  };
+}

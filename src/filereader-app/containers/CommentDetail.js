@@ -34,6 +34,7 @@ class CommentDetail extends Component{
     return (
       <div>
         <div className="comment-text">
+          <hr/>
           <button type="button"
                   onClick={() => this.props.deleteComment(issueId, commentId)}
             className="btn btn-default">
@@ -51,6 +52,7 @@ class CommentDetail extends Component{
           on: {submit_date}
 
           {this.showUpdater(comment)}
+
         </div>
       </div>
     );

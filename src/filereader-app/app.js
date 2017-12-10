@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import ReactFileReader from 'react-file-reader';
 import { connect } from 'react-redux';
-import { readFileLine, setDb } from './actions';
+import { readFileLine, setDb, searchText } from './actions';
 import LineDisplayer from './containers/LineDisplayer';
 import CommentBox from './containers/CommentBox';
 import { userDir } from '../index';
@@ -36,8 +36,7 @@ class Dbv extends Component {
   handlePageClick({selected}){
   }
 
-  printLines(){
-    const lines = this.props.fileLines;
+  printLines(lines){
     if (lines && lines.length>0){
         return lines.map(
           (line, indx) => <LineDisplayer key={indx} line={line}/>
@@ -47,16 +46,16 @@ class Dbv extends Component {
 
   displayCommentBox(){
     if (this.props.showCommentBox){
-      return (
-        <div style={{position: 'fixed', right:0,  top:-10, background:'black',
-                     color:'white',
-                     opacity:'0.9', height:'100%',
-             width:'500px', marginTop:'10px'}}>
-          <CommentBox/>
-        </div>
-      );
+      return <CommentBox/>;
     }
     return null;
+  }
+
+  searchText(event){
+    let searchValue = event.target.value;
+    if (searchValue && searchValue ==='')
+      searchValue = null;
+    this.props.searchText(searchValue, this.props.fileLines);
   }
 
   render() {
@@ -68,7 +67,9 @@ class Dbv extends Component {
           <button className='btn'>Read Report</button>
         </ReactFileReader>
 
-        {this.printLines()}
+        <input onChange={this.searchText.bind(this)}/>
+
+        {this.printLines(this.props.searchTextResult || this.props.fileLines)}
 
         {this.displayCommentBox()}
       </div>
@@ -76,8 +77,8 @@ class Dbv extends Component {
   }
 }
 
-function mapStateToProps({fileLines, db, showCommentBox}){
-  return {fileLines, db, showCommentBox};
+function mapStateToProps({fileLines, db, showCommentBox, searchTextResult}){
+  return {fileLines, db, showCommentBox, searchTextResult};
 }
 
-export default connect(mapStateToProps, { readFileLine, setDb })(Dbv);
+export default connect(mapStateToProps, { readFileLine, setDb, searchText })(Dbv);
