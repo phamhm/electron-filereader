@@ -1,0 +1,46 @@
+{
+  "name": "my-app",
+  "description": "test electron build",
+  "author": "the internet",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "knex": "^0.14.2",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-file-reader": "^1.1.3",
+    "react-redux": "^5.0.6",
+    "react-scripts": "1.0.17",
+    "redux": "^3.7.2",
+    "redux-form": "^7.2.0",
+    "redux-promise": "^0.5.3",
+    "sqlite3": "^3.1.13"
+  },
+  "devDependencies": {
+    "electron": "^1.7.9",
+    "electron-builder": "^19.48.3",
+    "electron-rebuild": "^1.6.0",
+    "jest-cli": "^21.2.1",
+    "web3": "^1.0.0-beta.22"
+  },
+  "homepage": "./",
+  "main": "src/electron-starter.js",
+  "scripts": {
+    "start": "nf start -p 3000",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "electron": "electron .",
+    "electron-start": "node src/electron-wait-react",
+    "react-start": "react-scripts start",
+    "pack": "build --dir",
+    "dist": "npm run build && build",
+    "postinstall": "install-app-deps"
+  },
+  "build": {
+    "appId": "com.electron.electron-with-create-react-app",
+    "directories": {
+      "buildResources": "public"
+    }
+  }
+}
