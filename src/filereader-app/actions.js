@@ -1,13 +1,6 @@
 'use babel';
 import TYPES from './ACTION_TYPES';
-
-const knex = require('knex')({
-  client:"sqlite3",
-  connection:{
-    filename: "./database.sqlite"
-  },
-  useNullAsDefault: true
-});
+import { knex } from '../index';
 
 export function readFileLine(lines){
   return {
@@ -24,7 +17,6 @@ export function selectLine(line){
 }
 
 export function createPost(comment, issueId, issueDesc=''){
-  // const URL = `${ROOT_URL}/${id}`;
 
   knex('ISSUE').insert({id:issueId, description: issueDesc})
     .catch((err) => console.log(err))
@@ -63,7 +55,6 @@ export function deleteComment(issueId, commentId){
 }
 
 export function updateComment(issueId, commentId, newComment){
-  console.log('updating comment', commentId, newComment);
   const payload = knex('COMMENTS').where('id', commentId)
         .update({comment: newComment})
         .then(() => knex('COMMENTS').where('issue-id', issueId).then((vals) => vals));
@@ -81,9 +72,7 @@ export function setDb(knex){
   };
 }
 
-
 export function showCommentBox(toShow){
-  console.log('showcommentbox:', toShow);
   return  {
     type: TYPES.SHOW_COMMENT_BOX,
     payload: toShow

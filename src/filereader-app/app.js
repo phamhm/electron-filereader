@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { readFileLine, setDb } from './actions';
 import LineDisplayer from './containers/LineDisplayer';
 import CommentBox from './containers/CommentBox';
+import { userDir } from '../index';
 
 class Dbv extends Component {
   constructor(props){
@@ -15,28 +16,6 @@ class Dbv extends Component {
       maxLinePerPage: 10,
       currentPage: 0
     };
-
-    const knex = require('knex')({
-      client:"sqlite3",
-      connection:{
-        filename: "./database.sqlite"
-      },
-      useNullAsDefault: true
-    });
-
-    knex.schema.createTableIfNotExists('ISSUE', (issue) => {
-      issue.string('id').primary();
-      issue.string('description');
-      issue.timestamps(true, true);
-    }).createTableIfNotExists('COMMENTS', (comment) => {
-      comment.increments().primary();
-      comment.string('comment').notNullable();
-      comment.timestamps(true, true);
-      comment.string('issue-id').notNullable();
-      comment.foreign('issue-id')
-        .references('id').inTable('ISSUE')
-        .onDelete('CASCADE');})
-      .return();
   }
 
   readLocalFiles(files){
@@ -55,7 +34,6 @@ class Dbv extends Component {
   }
 
   handlePageClick({selected}){
-    console.log(selected);
   }
 
   printLines(){

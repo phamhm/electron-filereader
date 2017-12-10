@@ -28,7 +28,6 @@ class CommentDetail extends Component{
   }
 
   render(){
-    console.log(this.props.comment);
     const {comment, id: commentId, created_at:submit_date} = this.props.comment;
     const { issueId } = this.props;
 

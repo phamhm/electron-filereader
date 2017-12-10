@@ -5,9 +5,6 @@ import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import { createPost } from '../actions';
 
-
-//TODO: form is not being blanked out.
-
 class CommentForm extends Component {
   renderFields(field){
     const {meta:{touched = null, error=null}} = field;

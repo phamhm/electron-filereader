@@ -1,0 +1,9 @@
+*  npm rebuild doesnt run for some reason. to make this work, run it in the terminal
+** "rebuild":"./node_modules/.bin/electron-rebuild -w sqlite3 -p"
+* knex select will return an empty array if none is found.
+* tryng Paginate-react, set state with maxLinePerPage and current_page
+* need webpack, can't do shit with es6
+** using create-react-app and ran the 'eject' command <= this exposes the webpack in ./config dir
+** something weird is goign on with sqlite3 import. could it be es6 can't read the es5 sqlite3?
+** i can require sqlite3 and create the database with it. just sequelize and knex can't connect to sqlite3 for some reason
+** the problem is with importing knext. I change the import to window.require('knex') and the issue is gone.
