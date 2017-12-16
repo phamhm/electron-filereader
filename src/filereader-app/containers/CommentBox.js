@@ -22,9 +22,12 @@ function CommentBox({selectLine:{line}, showCommentBox}) {
                  overflowY: 'auto', opacity:'0.9', width:'500px'}}>
       <br/>
       <button onClick = { () => showCommentBox(false)}> x </button>
-      <h2>{line}</h2>
-      <CommentForm issueId={b64}/>
-      <CommentList issueId={b64}/>
+
+      <div style={{margin:"5px"}}>
+        <h2>{line}</h2>
+        <CommentForm issueId={b64}/>
+        <CommentList issueId={b64}/>
+      </div>
     </div>
   );
 }

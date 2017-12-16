@@ -1,6 +1,6 @@
 'use babel';
 import TYPES from './ACTION_TYPES';
-import { knex } from '../index';
+import { knex } from './utilities/knex';
 
 export function readFileLine(lines){
   return {
@@ -22,7 +22,7 @@ export function createPost(comment, issueId, issueDesc=''){
     .catch((err) => console.log(err))
     .return();
 
-  const payload = knex('COMMENTS').insert({comment, 'issue-id': issueId})
+  const payload = knex('COMMENTS').insert({...comment, 'issue-id': issueId})
         .then(() => {
           return knex('COMMENTS').where('issue-id', issueId).then((val) => val);
         });
@@ -85,7 +85,7 @@ export function searchText(text, lines){
   if (!text)
     payload = null;
   else
-    payload = lines.filter((line) => line.indexOf(text) != -1);
+    payload = lines.filter((line) => line.indexOf(text) !== -1);
 
   return {
     type: TYPES.SEARCH_TEXT,

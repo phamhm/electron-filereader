@@ -1,47 +1,21 @@
 'use babel';
 
 import React, { Component } from 'react';
-import ReactFileReader from 'react-file-reader';
 import { connect } from 'react-redux';
-import { readFileLine, setDb, searchText } from './actions';
-import LineDisplayer from './containers/LineDisplayer';
+import { searchText } from './actions';
+import { Paginator } from './components/PageDisplayer';
+import LocalFileReader from './components/FileReader';
 import CommentBox from './containers/CommentBox';
-import { userDir } from '../index';
 
-class Dbv extends Component {
+class App extends Component {
   constructor(props){
     super(props);
 
     this.state = {
       maxLinePerPage: 10,
-      currentPage: 0
+      totalPages:0,
+      currentPages: 0
     };
-  }
-
-  readLocalFiles(files){
-    const file = files[0];
-
-    const fileReader = new FileReader();
-
-    fileReader.readAsText(file);
-    const readFileLine = this.props.readFileLine;
-
-    fileReader.onload = (event) => {
-      const res = event.target.result;
-      const lines = res.split(/[\n]+/g);
-      readFileLine(lines);
-    };
-  }
-
-  handlePageClick({selected}){
-  }
-
-  printLines(lines){
-    if (lines && lines.length>0){
-        return lines.map(
-          (line, indx) => <LineDisplayer key={indx} line={line}/>
-        );
-    }
   }
 
   displayCommentBox(){
@@ -58,27 +32,59 @@ class Dbv extends Component {
     this.props.searchText(searchValue, this.props.fileLines);
   }
 
+  resetPage(data){
+    const dataLength = data.length,
+          { maxLinePerPage } = this.state;
+    this.setState({...this.state,
+                   currentPage:0,
+                   totalPages: Math.ceil(dataLength / maxLinePerPage)
+                  });
+  }
+
+  nextPage(data, reverse = false){
+    const dataLength = data.length,
+          {currentPage, maxLinePerPage, totalPages} = this.state;
+    if ( !data || !data.length )
+      return;
+
+    if (maxLinePerPage > 0){
+      let nextPage;
+      if (reverse)
+        nextPage = (currentPage - 1) < 0 ? totalPages - 1 : currentPage -1;
+      else
+        nextPage = (currentPage + 1) === totalPages ? 0 : currentPage + 1;
+      this.setState({...this.state, currentPage: nextPage});
+    }
+  }
+
   render() {
+    const data = this.props.searchTextResult || this.props.fileLines;
+    const currentPage = (data && data.length) ? this.state.currentPage + 1: 0;
+    const totalPages = this.state.totalPages;
+
     return (
       <div>
-        <ReactFileReader
-          fileTypes={['.txt']}
-          handleFiles={this.readLocalFiles.bind(this)}>
-          <button className='btn'>Read Report</button>
-        </ReactFileReader>
+        <LocalFileReader callBack = {(data) => this.resetPage(data)}/>
 
         <input onChange={this.searchText.bind(this)}/>
+        <center>
+          <button onClick = { ()=>this.nextPage(data, true) }> {"<"} </button>
+          <input readOnly maxLength="5" style={{textAlign:"center"}} value={`${currentPage}/${totalPages}`}/>
+          <button onClick = { ()=>this.nextPage(data) } > {">"} </button>
+        </center>
 
-        {this.printLines(this.props.searchTextResult || this.props.fileLines)}
-
+        <Paginator data={data}
+                   page={this.state.currentPage}
+                   linesPerPage={this.state.maxLinePerPage}
+                   />
         {this.displayCommentBox()}
       </div>
     );
   }
 }
 
-function mapStateToProps({fileLines, db, showCommentBox, searchTextResult}){
-  return {fileLines, db, showCommentBox, searchTextResult};
+function mapStateToProps({fileLines, showCommentBox, searchTextResult}){
+  return {fileLines, showCommentBox, searchTextResult};
 }
 
-export default connect(mapStateToProps, { readFileLine, setDb, searchText })(Dbv);
+export default connect(mapStateToProps, { searchText })(App);

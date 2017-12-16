@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import { createPost } from '../actions';
+import TODOS from '../../TODOS';
 
 class CommentForm extends Component {
   renderFields(field){
@@ -20,8 +21,11 @@ class CommentForm extends Component {
     );
   }
 
-  onSubmit({ comment }){
+  onSubmit(comment){
     const { issueId } = this.props;
+    if (!comment.todo)
+      comment = {...comment, todo:TODOS[0]};
+
     this.props.createPost(comment, issueId).then(() => this.props.reset());
   }
 
@@ -33,6 +37,11 @@ class CommentForm extends Component {
           <Field name="comment"
                  label="Comment"
                  component={this.renderFields}/>
+          <Field name="todo"
+                 label="ToDo"
+                 component="select">
+            {Object.keys(TODOS).map((todo) => <option key={todo}>{todo}</option>)}
+          </Field>
           <button type="submit"
                   className="btn btn-primary">Add</button>
         </form>

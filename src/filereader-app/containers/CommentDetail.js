@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {deleteComment} from '../actions';
 import CommentUpdater from './CommentUpdater';
+import TODOS from '../../TODOS';
 
 class CommentDetail extends Component{
   constructor(props){
@@ -15,7 +16,10 @@ class CommentDetail extends Component{
     this.setState({showUpdate: !this.state.showUpdate});
   }
 
-  showUpdater(comment){
+  showUpdater(comment, todo){
+    const color = TODOS[todo] ? TODOS[todo] : 'white',
+          action = todo ? <span style={{color:color}}>{todo.toUpperCase()}:</span> : null;
+
     if (this.state.showUpdate)
       return (
         <CommentUpdater
@@ -24,11 +28,15 @@ class CommentDetail extends Component{
           issueId={this.props.issueId}/>
       );
     else
-      return <p>{comment}</p>;
+      return (
+        <p>
+          {action}
+          {comment}
+        </p>);
   }
 
   render(){
-    const {comment, id: commentId, created_at:submit_date} = this.props.comment;
+    const {comment, todo, id: commentId, created_at:submit_date} = this.props.comment;
     const { issueId } = this.props;
 
     return (
@@ -49,10 +57,10 @@ class CommentDetail extends Component{
             <span aria-hidden="true">u</span>
           </button>
 
+
           on: {submit_date}
-
-          {this.showUpdater(comment)}
-
+          <br/>
+          {this.showUpdater(comment, todo)}
         </div>
       </div>
     );

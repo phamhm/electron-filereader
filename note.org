@@ -7,3 +7,11 @@
 ** something weird is goign on with sqlite3 import. could it be es6 can't read the es5 sqlite3?
 ** i can require sqlite3 and create the database with it. just sequelize and knex can't connect to sqlite3 for some reason
 ** the problem is with importing knext. I change the import to window.require('knex') and the issue is gone.
+* components set up:
+** file reader
+*** page formater
+**** line displayer
+* TODO [1/3]
+  - [X] paginator
+  - [ ] todo item check
+  - [ ] navbar

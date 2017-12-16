@@ -43,7 +43,7 @@ class CommentUpdater extends Component{
             className="form-control"
             onChange={this.onUpdateChange.bind(this)}
             value={this.state.commentText}/>
-
+          <br/>
           <button type="submit"
                   className="btn btn-default">
             <span aria-hidden="true">Update</span>
